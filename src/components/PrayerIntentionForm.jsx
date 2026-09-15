@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useI18n } from '../i18n.jsx';
+import { supabase } from '../lib/supabase.js';
 
 const INITIAL_FORM = {
+  submitterName: '',
   name: '',
   intention: '',
   massTime: '',
@@ -12,10 +14,13 @@ export default function PrayerIntentionForm() {
   const [form, setForm] = useState(INITIAL_FORM);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   function handleChange(e) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    setSubmitError('');
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
     }
@@ -23,13 +28,14 @@ export default function PrayerIntentionForm() {
 
   function validate() {
     const newErrors = {};
+    if (!form.submitterName.trim()) newErrors.submitterName = t('validationSubmitterName');
     if (!form.name.trim()) newErrors.name = t('validationName');
     if (!form.intention.trim()) newErrors.intention = t('validationIntention');
     if (!form.massTime) newErrors.massTime = t('validationMassTime');
     return newErrors;
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -37,20 +43,45 @@ export default function PrayerIntentionForm() {
       return;
     }
 
-    // TODO: Replace with actual API call to persist the intention
-    console.log('Prayer intention submitted:', form);
-    setSubmitted(true);
+    if (!supabase) {
+      setSubmitError(t('persistenceNotConfigured'));
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const { error } = await supabase.from('prayer_intentions').insert({
+        submitter_name: form.submitterName.trim(),
+        name: form.name.trim(),
+        intention: form.intention.trim(),
+        mass_time: form.massTime,
+      });
+
+      if (error) {
+        setSubmitError(t('submissionError'));
+        return;
+      }
+
+      setSubmitted(true);
+    } catch {
+      setSubmitError(t('submissionError'));
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function handleReset() {
     setForm(INITIAL_FORM);
     setErrors({});
     setSubmitted(false);
+    setSubmitError('');
   }
 
   const selectedMassLabel = massTimes.find((m) => m.value === form.massTime)?.label ?? '';
   const submittedMessage = t('submittedMessage')({
-    name: form.name,
+    submitterName: form.submitterName,
     massTime: selectedMassLabel,
   });
 
@@ -85,7 +116,23 @@ export default function PrayerIntentionForm() {
       </p>
 
       <form onSubmit={handleSubmit} noValidate className="space-y-5">
-        {/* Name Field */}
+        <div>
+          <label htmlFor="submitterName" className="block text-sm font-medium text-gray-700 mb-1">
+            {t('submitterNameLabel')}
+          </label>
+          <input
+            id="submitterName"
+            name="submitterName"
+            type="text"
+            placeholder={t('submitterNamePlaceholder')}
+            value={form.submitterName}
+            onChange={handleChange}
+            className={`w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition
+              ${errors.submitterName ? 'border-red-400 ring-2 ring-red-100' : 'border-gray-300 focus:border-[#1a237e] focus:ring-2 focus:ring-indigo-100'}`}
+          />
+          {errors.submitterName && <p className="mt-1 text-xs text-red-500">{errors.submitterName}</p>}
+        </div>
+
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
             {t('nameLabel')}
@@ -103,7 +150,6 @@ export default function PrayerIntentionForm() {
           {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
         </div>
 
-        {/* Intention Description */}
         <div>
           <label htmlFor="intention" className="block text-sm font-medium text-gray-700 mb-1">
             {t('intentionLabel')}
@@ -121,7 +167,6 @@ export default function PrayerIntentionForm() {
           {errors.intention && <p className="mt-1 text-xs text-red-500">{errors.intention}</p>}
         </div>
 
-        {/* Mass Time Picker */}
         <div>
           <label htmlFor="massTime" className="block text-sm font-medium text-gray-700 mb-1">
             {t('massTimeLabel')}
@@ -143,13 +188,14 @@ export default function PrayerIntentionForm() {
           {errors.massTime && <p className="mt-1 text-xs text-red-500">{errors.massTime}</p>}
         </div>
 
-        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-[#1a237e] text-white py-3 rounded-lg font-medium hover:bg-[#283593] active:scale-[0.98] transition-all cursor-pointer text-sm tracking-wide"
+          disabled={isSubmitting}
+          className="w-full bg-[#1a237e] text-white py-3 rounded-lg font-medium hover:bg-[#283593] active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed text-sm tracking-wide"
         >
-          &#10013;&ensp;{t('submitButton')}
+          &#10013;&ensp;{isSubmitting ? t('submittingButton') : t('submitButton')}
         </button>
+        {submitError && <p className="text-sm text-red-600 text-center" role="alert">{submitError}</p>}
       </form>
     </div>
   );

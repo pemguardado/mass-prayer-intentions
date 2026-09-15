@@ -29,14 +29,16 @@
 
 ## Functional Behavior
 - Displays a form to submit prayer intentions with fields:
+  - Submitter name
   - Name of the prayer
   - Intention description
   - Mass time selection
 - Client-side validation ensures all fields are completed.
 - On successful submit:
-  - Form data is logged to the browser console.
-  - UI switches to a submission confirmation card.
-- No backend persistence is currently implemented.
+  - Form data is inserted into Supabase.
+  - UI switches to a submission confirmation card only after the insert succeeds.
+- Prayer intentions are persisted through Supabase in `public.prayer_intentions`.
+- Configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in a local `.env` file.
 
 ## Git and Version Control
 - Git repository status: initialized in project root (`.git/`)
@@ -48,7 +50,7 @@
   - log files
 
 ## Current Technical Notes
-- There is a TODO in `PrayerIntentionForm.jsx` to replace `console.log` with an API call for persistence.
+- The expected Supabase table and anonymous insert policy are documented in `supabase/schema.sql`.
 - Project currently includes generated build output (`dist/`) and dependencies (`node_modules/`) in workspace, but these are ignored by Git.
 
 ## Date
