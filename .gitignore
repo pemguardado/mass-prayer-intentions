@@ -4,6 +4,9 @@ node_modules/
 # Build output
 dist/
 
+# Vercel local project link metadata
+.vercel
+
 # Environment variables
 .env
 .env.local
@@ -26,3 +29,4 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+.env*

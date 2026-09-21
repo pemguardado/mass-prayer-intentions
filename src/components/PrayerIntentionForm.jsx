@@ -4,13 +4,13 @@ import { supabase } from '../lib/supabase.js';
 
 const INITIAL_FORM = {
   submitterName: '',
-  name: '',
+  prayerType: '',
   intention: '',
   massTime: '',
 };
 
 export default function PrayerIntentionForm() {
-  const { t, massTimes } = useI18n();
+  const { t, massTimes, prayerTypes } = useI18n();
   const [form, setForm] = useState(INITIAL_FORM);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
@@ -29,7 +29,7 @@ export default function PrayerIntentionForm() {
   function validate() {
     const newErrors = {};
     if (!form.submitterName.trim()) newErrors.submitterName = t('validationSubmitterName');
-    if (!form.name.trim()) newErrors.name = t('validationName');
+    if (!form.prayerType) newErrors.prayerType = t('validationPrayerType');
     if (!form.intention.trim()) newErrors.intention = t('validationIntention');
     if (!form.massTime) newErrors.massTime = t('validationMassTime');
     return newErrors;
@@ -54,7 +54,7 @@ export default function PrayerIntentionForm() {
     try {
       const { error } = await supabase.from('prayer_intentions').insert({
         submitter_name: form.submitterName.trim(),
-        name: form.name.trim(),
+        prayer_type: form.prayerType,
         intention: form.intention.trim(),
         mass_time: form.massTime,
       });
@@ -134,20 +134,24 @@ export default function PrayerIntentionForm() {
         </div>
 
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-            {t('nameLabel')}
+          <label htmlFor="prayerType" className="block text-sm font-medium text-gray-700 mb-1">
+            {t('prayerTypeLabel')}
           </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            placeholder={t('namePlaceholder')}
-            value={form.name}
+          <select
+            id="prayerType"
+            name="prayerType"
+            value={form.prayerType}
             onChange={handleChange}
-            className={`w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition
-              ${errors.name ? 'border-red-400 ring-2 ring-red-100' : 'border-gray-300 focus:border-[#1a237e] focus:ring-2 focus:ring-indigo-100'}`}
-          />
-          {errors.name && <p className="mt-1 text-xs text-red-500">{errors.name}</p>}
+            className={`w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition bg-white cursor-pointer
+              ${errors.prayerType ? 'border-red-400 ring-2 ring-red-100' : 'border-gray-300 focus:border-[#1a237e] focus:ring-2 focus:ring-indigo-100'}`}
+          >
+            {prayerTypes.map((pt) => (
+              <option key={pt.value} value={pt.value} disabled={pt.value === ''}>
+                {pt.label}
+              </option>
+            ))}
+          </select>
+          {errors.prayerType && <p className="mt-1 text-xs text-red-500">{errors.prayerType}</p>}
         </div>
 
         <div>

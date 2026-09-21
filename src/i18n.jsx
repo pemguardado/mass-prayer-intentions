@@ -27,6 +27,23 @@ const massTimesByLocale = {
   ],
 };
 
+const prayerTypesByLocale = {
+  en: [
+    { value: '', label: 'Select a type...' },
+    { value: 'congratulations', label: 'Congratulations' },
+    { value: 'condolence', label: 'Condolence' },
+    { value: 'anniversary', label: 'Anniversary' },
+    { value: 'others', label: 'Others' },
+  ],
+  es: [
+    { value: '', label: 'Seleccione un tipo...' },
+    { value: 'congratulations', label: 'Felicitacion' },
+    { value: 'condolence', label: 'Condolencia' },
+    { value: 'anniversary', label: 'Aniversario' },
+    { value: 'others', label: 'Otros' },
+  ],
+};
+
 const translations = {
   en: {
     churchName: "St. Mary's Catholic Church",
@@ -49,14 +66,13 @@ const translations = {
     formSubtitle: 'Share your prayer request with our parish community.',
     submitterNameLabel: 'Your Name',
     submitterNamePlaceholder: 'Enter your name',
-    nameLabel: 'Name of the Prayer',
-    namePlaceholder: 'e.g. "Healing for John" or "Thanksgiving"',
+    prayerTypeLabel: 'Type of Pray',
     intentionLabel: 'Intention Description',
     intentionPlaceholder: 'Describe your prayer intention...',
     massTimeLabel: 'Mass Time',
     submitButton: 'Submit Prayer Intention',
     validationSubmitterName: 'Please enter your name.',
-    validationName: 'Please enter a name for this prayer.',
+    validationPrayerType: 'Please select a type of prayer.',
     validationIntention: 'Please describe the prayer intention.',
     validationMassTime: 'Please select a Mass time.',
   },
@@ -81,14 +97,13 @@ const translations = {
     formSubtitle: 'Comparta su peticion de oracion con nuestra comunidad parroquial.',
     submitterNameLabel: 'Su nombre',
     submitterNamePlaceholder: 'Ingrese su nombre',
-    nameLabel: 'Nombre de la oracion',
-    namePlaceholder: 'ej. "Sanacion para Juan" o "Accion de gracias"',
+    prayerTypeLabel: 'Tipo de oracion',
     intentionLabel: 'Descripcion de la intencion',
     intentionPlaceholder: 'Describa su intencion de oracion...',
     massTimeLabel: 'Horario de misa',
     submitButton: 'Enviar intencion de oracion',
     validationSubmitterName: 'Ingrese su nombre.',
-    validationName: 'Ingrese un nombre para esta oracion.',
+    validationPrayerType: 'Seleccione un tipo de oracion.',
     validationIntention: 'Describa la intencion de oracion.',
     validationMassTime: 'Seleccione un horario de misa.',
   },
@@ -114,7 +129,8 @@ export function I18nProvider({ children }) {
   const value = useMemo(() => {
     const t = (key) => translations[locale]?.[key] ?? translations.en[key] ?? key;
     const massTimes = massTimesByLocale[locale] ?? massTimesByLocale.en;
-    return { locale, setLocale, t, massTimes };
+    const prayerTypes = prayerTypesByLocale[locale] ?? prayerTypesByLocale.en;
+    return { locale, setLocale, t, massTimes, prayerTypes };
   }, [locale]);
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
