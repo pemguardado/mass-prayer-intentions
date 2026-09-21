@@ -53,5 +53,13 @@
 - The expected Supabase table and anonymous insert policy are documented in `supabase/schema.sql`.
 - Project currently includes generated build output (`dist/`) and dependencies (`node_modules/`) in workspace, but these are ignored by Git.
 
+## CI/CD (GitHub Actions + Vercel)
+- Repository: `https://github.com/pemguardado/mass-prayer-intentions`
+- `.github/workflows/ci.yml`: runs `npm ci` + `npm run build` on every push/PR to `master`.
+- `.github/workflows/deploy.yml`: deploys to Vercel production on every push to `master` using the Vercel CLI.
+- Required repository secrets (Settings → Secrets and variables → Actions):
+  - `VERCEL_TOKEN`: personal token from https://vercel.com/account/tokens
+  - `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID`: found in `.vercel/project.json` after running `vercel link` locally, or in the Vercel project settings.
+
 ## Date
 - Document generated on: 2026-06-21
