@@ -60,6 +60,7 @@
 - Required repository secrets (Settings → Secrets and variables → Actions):
   - `VERCEL_TOKEN`: personal token from https://vercel.com/account/tokens
   - `VERCEL_ORG_ID` and `VERCEL_PROJECT_ID`: found in `.vercel/project.json` after running `vercel link` locally, or in the Vercel project settings.
+- Production URL (stable, always reflects the latest `master` deploy): `https://mass-prayer-intentions.vercel.app`. Each individual deploy also gets a unique one-off URL, which is only a snapshot and does not update.
 
 ## Date
 - Document generated on: 2026-06-21
