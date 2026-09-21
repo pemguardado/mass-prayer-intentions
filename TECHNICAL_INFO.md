@@ -50,8 +50,19 @@
   - log files
 
 ## Current Technical Notes
-- The expected Supabase table and anonymous insert policy are documented in `supabase/schema.sql`.
+- Database schema is managed via Supabase CLI migrations in `supabase/migrations/` (see "Database Migrations" below), not a hand-maintained schema file.
 - Project currently includes generated build output (`dist/`) and dependencies (`node_modules/`) in workspace, but these are ignored by Git.
+
+## Database Migrations (Supabase CLI)
+- Project ref: `dbqzuialdajtuzzndjmu`. Linked project metadata lives in `supabase/.temp/` (gitignored).
+- The `supabase` CLI is installed as a local devDependency; invoke it with `npx supabase <command>`.
+- One-time setup (already done): `npx supabase link --project-ref dbqzuialdajtuzzndjmu` using a personal access token from https://supabase.com/dashboard/account/tokens, exported as `SUPABASE_ACCESS_TOKEN`.
+- Workflow for future DB changes:
+  1. `SUPABASE_ACCESS_TOKEN=... npx supabase migration new <short_description>` to scaffold a new file in `supabase/migrations/`.
+  2. Write the SQL changes in that file.
+  3. `SUPABASE_ACCESS_TOKEN=... npx supabase db push` to apply it to the live database.
+  4. Commit the new migration file to the repo (same PR as any related frontend changes).
+- `npx supabase migration list` shows which migrations are applied locally vs. remotely.
 
 ## CI/CD (GitHub Actions + Vercel)
 - Repository: `https://github.com/pemguardado/mass-prayer-intentions`
