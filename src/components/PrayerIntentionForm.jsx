@@ -87,7 +87,7 @@ export default function PrayerIntentionForm() {
 
   if (submitted) {
     return (
-      <div className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 text-center">
+      <div className="w-full max-w-lg rounded-2xl border border-white/60 bg-[#fffaf2]/95 p-8 text-center shadow-2xl backdrop-blur-sm">
         <div className="text-5xl mb-4">🕊️</div>
         <h2 className="text-2xl font-serif font-bold text-[#1a237e] mb-2">
           {t('submittedTitle')}
@@ -107,7 +107,7 @@ export default function PrayerIntentionForm() {
   }
 
   return (
-    <div className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8">
+    <div className="w-full max-w-lg rounded-2xl border border-white/60 bg-[#fffaf2]/95 p-8 shadow-2xl backdrop-blur-sm">
       <h2 className="text-xl md:text-2xl font-serif font-bold text-[#1a237e] mb-1 text-center">
         {t('formTitle')}
       </h2>
@@ -127,7 +127,7 @@ export default function PrayerIntentionForm() {
             placeholder={t('submitterNamePlaceholder')}
             value={form.submitterName}
             onChange={handleChange}
-            className={`w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition
+            className={`w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition bg-white
               ${errors.submitterName ? 'border-red-400 ring-2 ring-red-100' : 'border-gray-300 focus:border-[#1a237e] focus:ring-2 focus:ring-indigo-100'}`}
           />
           {errors.submitterName && <p className="mt-1 text-xs text-red-500">{errors.submitterName}</p>}
@@ -165,7 +165,7 @@ export default function PrayerIntentionForm() {
             placeholder={t('intentionPlaceholder')}
             value={form.intention}
             onChange={handleChange}
-            className={`w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition resize-y
+            className={`w-full rounded-lg border px-4 py-2.5 text-sm outline-none transition resize-y bg-white
               ${errors.intention ? 'border-red-400 ring-2 ring-red-100' : 'border-gray-300 focus:border-[#1a237e] focus:ring-2 focus:ring-indigo-100'}`}
           />
           {errors.intention && <p className="mt-1 text-xs text-red-500">{errors.intention}</p>}
