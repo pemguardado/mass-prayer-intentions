@@ -4,9 +4,9 @@ export default function Header() {
   const { locale, setLocale, t } = useI18n();
 
   return (
-    <header className="bg-[#1a237e] text-white shadow-lg">
+    <header className="border-b border-amber-200/25 bg-[#241d4d]/90 text-white shadow-lg backdrop-blur-sm">
       <div className="max-w-4xl mx-auto px-4 py-6 text-center">
-        <div className="text-4xl mb-2">&#10013;</div>
+        <div className="mb-2 text-4xl text-amber-200">&#10013;</div>
         <h1 className="text-2xl md:text-3xl font-serif font-bold tracking-wide">
           {t('churchName')}
         </h1>

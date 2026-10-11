@@ -4,9 +4,9 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white flex flex-col">
+    <div className="app-shell min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 flex items-start justify-center px-4 py-10">
+      <main className="relative flex-1 flex items-start justify-center px-4 py-10 md:py-14">
         <PrayerIntentionForm />
       </main>
       <Footer />

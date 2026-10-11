@@ -53,6 +53,10 @@
 - Database schema is managed via Supabase CLI migrations in `supabase/migrations/` (see "Database Migrations" below), not a hand-maintained schema file.
 - Project currently includes generated build output (`dist/`) and dependencies (`node_modules/`) in workspace, but these are ignored by Git.
 
+## Recent UI Updates
+- The page background uses a small repeating image of Sassoferrato's "Virgin in Prayer" as a subdued watermark. The artwork is public domain; source: https://commons.wikimedia.org/wiki/File:Sassoferrato,_Virgin_in_prayer,_Melbourne.jpg.
+- The prayer form's name and intention text fields use a white background to match the dropdowns.
+
 ## Database Migrations (Supabase CLI)
 - Project ref: `dbqzuialdajtuzzndjmu`. Linked project metadata lives in `supabase/.temp/` (gitignored).
 - The `supabase` CLI is installed as a local devDependency; invoke it with `npx supabase <command>`.
